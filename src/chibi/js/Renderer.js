@@ -25,7 +25,7 @@ export default class Renderer {
         this.canvas.height = height;
     }
 
-    render(sceneUpdater, deltaTime) {
+    render(scene, deltaTime) {
         var gl = this.gl;
 
         gl.viewport(0.0, 0.0, this.canvas.width, this.canvas.height);
@@ -33,7 +33,7 @@ export default class Renderer {
         gl.clearDepth(1.0);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        sceneUpdater(gl, deltaTime);
+        scene.update(gl, deltaTime);
 
         gl.flush();
     }

@@ -13,13 +13,13 @@ export default class Game {
         return this.renderer.domElement;
     }
 
-    run(initializer, updater) {
+    run(scene) {
         var renderer = this.renderer, profiler = this.profiler;
         var timestamp = function() {
            return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
         };
 
-        initializer(renderer.context);
+        scene.initialize(renderer.context);
 
         var currentTime = timestamp(), deltaTime;
         var frame = function() {
@@ -28,7 +28,7 @@ export default class Game {
             deltaTime = currentTime - previousTime;
 
             profiler.begin();
-            renderer.render(updater, deltaTime);
+            renderer.render(scene, deltaTime);
             profiler.end();
 
             window.requestAnimationFrame(frame);
@@ -36,6 +36,4 @@ export default class Game {
 
         frame();
     }
-
-
 };
