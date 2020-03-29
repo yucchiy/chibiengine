@@ -1,12 +1,12 @@
-import Game from './js/chibi/Game.js';
-import Matrix4x4 from './js/chibi/Matrix4x4.js';
+import Game from './chibi/js/Game.js';
+import Matrix4x4 from './chibi/js/Matrix4x4.js';
 
-import ChibiWebGLProgram from './js/webgl/WebGLProgram.js';
-import ChibiWebGLShader from './js/webgl/WebGLShader.js';
-import ChibiWebGLBuffer from './js/webgl/WebGLBuffer.js';
+import ChibiWebGLProgram from './chibi/js/webgl/WebGLProgram.js';
+import ChibiWebGLShader from './chibi/js/webgl/WebGLShader.js';
+import ChibiWebGLBuffer from './chibi/js/webgl/WebGLBuffer.js';
 
-import vertexShaderSource from './shaders/vertexShader.glsl';
-import fragmentShaderSource from './shaders/fragmentShader.glsl';
+import vertexShaderSource from './chibi/glsl/vertexShader.glsl';
+import fragmentShaderSource from './chibi/glsl/fragmentShader.glsl';
 
 window.onload = function() {
     var game = new Game();

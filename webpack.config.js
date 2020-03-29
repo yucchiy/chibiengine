@@ -24,10 +24,12 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.glsl$/,
-                include: path.resolve(__dirname, 'src/shaders'),
+                test: /\.(frag|vert|glsl)$/,
+                include: [
+                    path.resolve(__dirname, 'src/chibi/glsl'),
+                ],
                 use: [
-                    'webpack-glsl-loader'
+                    'raw-loader'
                 ]
             }
         ]
