@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var debug = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src/entrypoint.js'),
+    entry: path.resolve(__dirname, 'src/entrypoint.ts'),
     plugins: [
         new HtmlWebpackPlugin({
             templateParameters: {
@@ -19,7 +19,7 @@ module.exports = {
         filename: 'bundle.js',
     },
     resolve: {
-        extensions: ['.js']
+        extensions: ['.tsx', '.ts', '.js']
     },
     module: {
         rules: [
@@ -30,6 +30,13 @@ module.exports = {
                 ],
                 use: [
                     'raw-loader'
+                ]
+            },
+            {
+                test: /\.tsx$/,
+                exclude: /node_modules/,
+                use: [
+                    'ts-loader'
                 ]
             }
         ]
