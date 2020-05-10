@@ -1,15 +1,22 @@
-export default class Renderer {
-    constructor(parameter) {
-        parameter = parameter || {};
+export class Renderer {
+    private canvas : HTMLCanvasElement;
+    private gl : WebGLRenderingContext;
 
-        var canvas =  parameter.canvas !== undefined ? parameter.canvas : document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas');
+    constructor() {
+        var canvas = document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas') as HTMLCanvasElement;
         canvas.width = 0; 
         canvas.height = 0;
 
-        var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        this.canvas = canvas;
+
+        var gl = (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')) as WebGLRenderingContext;
 
         this.canvas = canvas;
         this.gl = gl;
+
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LEQUAL);
+        gl.enable(gl.CULL_FACE);
     }
 
     get domElement() {
@@ -20,12 +27,12 @@ export default class Renderer {
         return this.gl;
     }
 
-    setSize(width, height) {
+    setSize(width : number, height : number) {
         this.canvas.width = width;
         this.canvas.height = height;
     }
 
-    render(scene, deltaTime) {
+    render(scene : any, deltaTime : number) {
         var gl = this.gl;
 
         gl.viewport(0.0, 0.0, this.canvas.width, this.canvas.height);

@@ -1,8 +1,11 @@
-import Renderer from './Renderer.js';
-import Profiler from './Profiler.js';
+import { Renderer } from './Renderer';
+import { Profiler } from './Profiler';
 
-export default class Game {
-    constructor(parameter) {
+export class Game {
+    renderer : Renderer;
+    profiler : any;
+
+    constructor() {
         this.renderer = new Renderer();
         this.renderer.setSize(600, 600);
 
@@ -13,7 +16,7 @@ export default class Game {
         return this.renderer.domElement;
     }
 
-    run(scene) {
+    run(scene: any) {
         var renderer = this.renderer, profiler = this.profiler;
         var timestamp = function() {
            return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();

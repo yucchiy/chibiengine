@@ -1,5 +1,11 @@
-export default class ChibiWebGLBuffer {
-    constructor(gl, id, type, data, bufferType) {
+export class ChibiWebGLBuffer<T extends BufferSource>  {
+    private gl : WebGLRenderingContext;
+    private id : number;
+    private type : GLenum;
+    private buffer : WebGLBuffer;
+    private data : T;
+
+    constructor(gl : WebGLRenderingContext, id : number, type : GLenum, data : T, bufferType : GLenum) {
         var buffer = gl.createBuffer();
         gl.bindBuffer(type, buffer);
         gl.bufferData(type, data, bufferType);
@@ -15,5 +21,9 @@ export default class ChibiWebGLBuffer {
 
     bind() {
         this.gl.bindBuffer(this.type, this.buffer);
+    }
+
+    getData() : T {
+        return this.data;
     }
 }
