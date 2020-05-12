@@ -1,6 +1,7 @@
-export function makeTorus(row : number, column : number, irad : number, orad : number) : [Float32Array, Float32Array, Int16Array] {
+export function makeTorus(row : number, column : number, irad : number, orad : number) : [Float32Array, Float32Array, Float32Array, Int16Array] {
     var outPosition = Array();
     var outColor = Array();
+    var outNormal = Array();
     var outIndex = Array();
 
     var positionOffset = 0;
@@ -15,6 +16,9 @@ export function makeTorus(row : number, column : number, irad : number, orad : n
             var ty = ry * irad;
             var tz = (rr * irad + orad) * Math.sin(tr);
             outPosition.push(tx, ty, tz);
+            var rx = rr * Math.cos(tr);
+            var rz = rr * Math.sin(tr);
+            outNormal.push(rx, ry, rz);
 
             var tc = hsva2rgba(360 / column * ii, 1, 1, 1);
             outColor.push(tc[0], tc[1], tc[2], tc[3]);
@@ -29,11 +33,12 @@ export function makeTorus(row : number, column : number, irad : number, orad : n
         }
     }
 
-    var a = new Float32Array(outPosition);
-    var b = new Float32Array(outColor);
-    var c = new Int16Array(outIndex);
+    var position = new Float32Array(outPosition);
+    var color = new Float32Array(outColor);
+    var normal = new Float32Array(outNormal);
+    var index = new Int16Array(outIndex);
 
-    return [a, b, c];
+    return [position, color, normal, index];
 }
 
 export function hsva2rgba(h : number, s : number, v : number, a : number) : Float32Array {

@@ -1,5 +1,6 @@
 import { Renderer } from './Renderer';
 import { Profiler } from './Profiler';
+import { Scene } from './Scene';
 
 export class Game {
     renderer : Renderer;
@@ -16,7 +17,7 @@ export class Game {
         return this.renderer.domElement;
     }
 
-    run(scene: any) {
+    run(scene: Scene) {
         var renderer = this.renderer, profiler = this.profiler;
         var timestamp = function() {
            return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
