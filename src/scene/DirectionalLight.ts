@@ -71,6 +71,7 @@ export class DirectionalLight extends Scene {
         var uniformViewMatrix = program.getUniformLocation('viewMatrix');
         var uniformProjectionMatrix = program.getUniformLocation('projectionMatrix');
         var uniformDirectionalLightDirection = program.getUniformLocation('directionalLightDirection');
+        var uniformAmbientColor = program.getUniformLocation('ambientColor');
 
         this.axis += Math.PI * 0.001 * deltaTime;
 
@@ -84,6 +85,7 @@ export class DirectionalLight extends Scene {
         gl.uniformMatrix4fv(uniformViewMatrix, false, viewMatrix);
         gl.uniformMatrix4fv(uniformProjectionMatrix, false, projectionMatrix);
         gl.uniform3fv(uniformDirectionalLightDirection, [-0.5, 0.5, 0.5]);
+        gl.uniform4fv(uniformAmbientColor, [0.1, 0.1, 0.1, 1.0]);
 
         gl.drawElements(gl.TRIANGLES, vertexIbo.getData().length, gl.UNSIGNED_SHORT, 0);
     }

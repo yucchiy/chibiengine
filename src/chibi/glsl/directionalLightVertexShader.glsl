@@ -8,11 +8,13 @@ uniform mat4 projectionMatrix;
 
 uniform vec3 directionalLightDirection;
 
+uniform vec4 ambientColor;
+
 varying vec4 outColor;
 
 void main(void) {
     vec3 inversedDirectionalLightDirection = normalize(inversedModelMatrix * vec4(directionalLightDirection, 0.0)).xyz;
     float diffuse = clamp(dot(normal, inversedDirectionalLightDirection), 0.1, 1.0);
-    outColor = color * vec4(vec3(diffuse), 1.0);
+    outColor = color * vec4(vec3(diffuse), 1.0) + ambientColor;
     gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
 }
