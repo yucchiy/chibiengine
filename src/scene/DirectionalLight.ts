@@ -1,7 +1,7 @@
-import Matrix4x4 from '../chibi/js/Matrix4x4.js';
 import { makeTorus } from '../chibi/js/math/primitive';
 import { Scene } from '../chibi/js/Scene';
-import { mat4 } from 'gl-matrix';
+import { Camera } from '../chibi/js/Camera';
+import { vec3, mat4 } from 'gl-matrix';
 
 import { ChibiWebGLProgram } from '../chibi/js/webgl/WebGLProgram';
 import { ChibiWebGLShader } from '../chibi/js/webgl/WebGLShader';
@@ -18,6 +18,7 @@ export class DirectionalLight extends Scene {
     private colorVbo : ChibiWebGLBuffer<Float32Array>;
     private normalVbo : ChibiWebGLBuffer<Float32Array>;
     private vertexIbo : ChibiWebGLBuffer<Int16Array>;
+    private camera : Camera;
     private axis : number;
 
     initialize(gl : WebGLRenderingContext) {
@@ -35,6 +36,7 @@ export class DirectionalLight extends Scene {
         this.colorVbo = new ChibiWebGLBuffer(gl, 1, gl.ARRAY_BUFFER, color, gl.STATIC_DRAW);
         this.normalVbo = new ChibiWebGLBuffer(gl, 1, gl.ARRAY_BUFFER, normal, gl.STATIC_DRAW);
         this.vertexIbo = new ChibiWebGLBuffer(gl, 1, gl.ELEMENT_ARRAY_BUFFER, index, gl.STATIC_DRAW)
+        this.camera = new Camera(vec3.fromValues(0, 5, 5), vec3.fromValues(0, 0, 0), 45, 1, 0.1, 100);
         this.axis = 0;
     }
 
@@ -75,10 +77,10 @@ export class DirectionalLight extends Scene {
 
         this.axis += Math.PI * 0.001 * deltaTime;
 
-        modelMatrix = mat4.rotate(mat4.create(), mat4.identity(mat4.create()), this.axis, [1, 1, 1]);
+        modelMatrix = mat4.rotate(mat4.create(), mat4.identity(mat4.create()), this.axis, [1, 0, 0]);
         inversedModelMatrix = mat4.invert(mat4.create(), modelMatrix);
-        viewMatrix = mat4.lookAt(mat4.create(), [0, 5, 5], [0, 0, 0], [0, 1, 0]);
-        projectionMatrix = mat4.perspective(mat4.create(), 45, 1, 0.1, 100);
+        viewMatrix = this.camera.viewMatrix;
+        projectionMatrix = this.camera.projectionMatrix;
 
         gl.uniformMatrix4fv(uniformModelMatrix, false, modelMatrix);
         gl.uniformMatrix4fv(uniformInversedModelMatrix, false, inversedModelMatrix);
