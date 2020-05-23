@@ -9,6 +9,7 @@ import { ChibiWebGLBuffer } from '../chibi/js/webgl/WebGLBuffer';
 
 import vertexShaderSource from '../chibi/glsl/directionalLightVertexShader.glsl';
 import fragmentShaderSource from '../chibi/glsl/fragmentShader.glsl';
+import { SphericalCameraWork } from '../chibi/js/SphericalCameraWork';
 
 export class DirectionalLight extends Scene {
     private vertexShader : ChibiWebGLShader;
@@ -19,6 +20,7 @@ export class DirectionalLight extends Scene {
     private normalVbo : ChibiWebGLBuffer<Float32Array>;
     private vertexIbo : ChibiWebGLBuffer<Int16Array>;
     private camera : Camera;
+    private cameraWork : SphericalCameraWork;
     private axis : number;
 
     initialize(gl : WebGLRenderingContext) {
@@ -37,10 +39,14 @@ export class DirectionalLight extends Scene {
         this.normalVbo = new ChibiWebGLBuffer(gl, 1, gl.ARRAY_BUFFER, normal, gl.STATIC_DRAW);
         this.vertexIbo = new ChibiWebGLBuffer(gl, 1, gl.ELEMENT_ARRAY_BUFFER, index, gl.STATIC_DRAW)
         this.camera = new Camera(vec3.fromValues(0, 5, 5), vec3.fromValues(0, 0, 0), 45, 1, 0.1, 100);
+        this.cameraWork = new SphericalCameraWork(this.camera, this.game.input, 4, 10);
+
         this.axis = 0;
     }
 
     update(gl : WebGLRenderingContext, deltaTime : number) {
+        this.cameraWork.update(deltaTime);
+
         var program = this.program;
         var positionVbo = this.positionVbo;
         var colorVbo = this.colorVbo;
@@ -77,7 +83,7 @@ export class DirectionalLight extends Scene {
 
         this.axis += Math.PI * 0.001 * deltaTime;
 
-        modelMatrix = mat4.rotate(mat4.create(), mat4.identity(mat4.create()), this.axis, [1, 0, 0]);
+        modelMatrix = mat4.rotate(mat4.create(), mat4.identity(mat4.create()), 0, [1, 0, 0]);
         inversedModelMatrix = mat4.invert(mat4.create(), modelMatrix);
         viewMatrix = this.camera.viewMatrix;
         projectionMatrix = this.camera.projectionMatrix;

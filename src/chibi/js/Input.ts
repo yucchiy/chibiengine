@@ -20,17 +20,19 @@ export class Input {
         this.element.addEventListener('mouseup', this.onMouseUp, true);
     }
 
-    private onMouseMove(event : MouseEvent) {
+    private onMouseMove = (event : MouseEvent) => {
         vec2.copy(this.mousePreviousPosition, this.mousePosition)
         vec2.set(this.mousePosition, event.offsetX, event.offsetY);
-        vec2.substruct(this.mouseDeltaPosition, this.mousePosition, this.mousePreviousPosition);
+        vec2.subtract(this.mouseDeltaPosition, this.mousePosition, this.mousePreviousPosition);
     }
 
-    private onMouseDown(event : MouseEvent) {
+    private onMouseDown = (event : MouseEvent) => {
+        vec2.set(this.mousePosition, event.offsetX, event.offsetY);
+        vec2.set(this.mousePreviousPosition, event.offsetX, event.offsetY);
         this.isDragging = true;
     }
 
-    private onMouseUp(event : MouseEvent) {
+    private onMouseUp = (event : MouseEvent) => {
         this.isDragging = false;
     }
 }
